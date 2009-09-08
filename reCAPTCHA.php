@@ -58,7 +58,7 @@ class modules_reCAPTCHA {
 		}
 		$public_key = $app->_conf['reCAPTCHA']['public_key'];
 		//echo $public_key; echo "here";exit;
-		echo '<div style="padding-left: 200px">'.recaptcha_get_html($public_key).'</div>';
+		echo '<div>'.recaptcha_get_html($public_key).'</div>';
 	
 	
 	}
