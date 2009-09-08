@@ -13,7 +13,7 @@
  */
 class modules_reCAPTCHA {
 
-
+	var $fieldAdded = false;
 	/**
 	 * Module constructor.  This is executed before each page request.  It checks to 
 	 * see if a user is logged in, if not, it registers the captcha validation function
@@ -45,6 +45,7 @@ class modules_reCAPTCHA {
 			$user =& $auth->getLoggedInUser();
 			if ( $user ) return null;
 		}
+		if ( $this->fieldAdded ) return;
 		require_once dirname(__FILE__).'/recaptcha-php/recaptchalib.php';
 		$app =& Dataface_Application::getInstance();
 		if ( !isset($app->_conf['reCAPTCHA']) or !isset($app->_conf['reCAPTCHA']['public_key']) ){
@@ -59,6 +60,7 @@ class modules_reCAPTCHA {
 		$public_key = $app->_conf['reCAPTCHA']['public_key'];
 		//echo $public_key; echo "here";exit;
 		echo '<div>'.recaptcha_get_html($public_key).'</div>';
+		$this->fieldAdded = true;
 	
 	
 	}
