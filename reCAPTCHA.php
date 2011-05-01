@@ -73,6 +73,7 @@ class modules_reCAPTCHA {
 	 * @return PEAR_Error or void 
 	 */
 	function validateCaptcha(){
+		if ( defined('DISABLE_reCAPTCHA') ) return true;
 		require_once(dirname(__FILE__).'/recaptcha-php/recaptchalib.php');
 		$app =& Dataface_Application::getInstance();
 		if ( !isset($app->_conf['reCAPTCHA']) or !isset($app->_conf['reCAPTCHA']['private_key']) ){
