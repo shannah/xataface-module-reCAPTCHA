@@ -30,7 +30,16 @@ class modules_reCAPTCHA {
 		$app =& Dataface_Application::getInstance();
 		$app->registerEventListener('Dataface_QuickForm_before_validate', array(&$this, 'validateCaptcha'));
 	}
-	
+
+
+        /**
+         * A block that is inserted into the "head_slot" slot.
+         *
+         * @return void
+         */
+	function block__head_slot() {
+		echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
+	}	
 	
 	/**
 	 * A block that is inserted into the "before_submit_button" slot in QuickForms.
@@ -59,7 +68,7 @@ class modules_reCAPTCHA {
 		}
 		$public_key = $app->_conf['reCAPTCHA']['public_key'];
 		//echo $public_key; echo "here";exit;
-		echo '<div>'.recaptcha_get_html($public_key).'</div>';
+		echo '<div class="g-recaptcha" data-sitekey="' . $public_key . '"></div>';
 		$this->fieldAdded = true;
 	
 	
@@ -88,11 +97,10 @@ class modules_reCAPTCHA {
 		$privatekey = $app->_conf['reCAPTCHA']['private_key'];
 		$resp = recaptcha_check_answer ($privatekey,
                                 $_SERVER["REMOTE_ADDR"],
-                                $_POST["recaptcha_challenge_field"],
-                                $_POST["recaptcha_response_field"]);
+                                $_POST["g-recaptcha-response"]);
 
 		if (!$resp->is_valid) {
-			return PEAR::raiseError("The reCAPTCHA wasn't entered correctly. Please try again." );
+			return PEAR::raiseError("The reCAPTCHA wasn't entered correctly. Please try again.");
        	} 
      }
 }
